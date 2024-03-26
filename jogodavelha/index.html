@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/png" href="./icon192.png">
+<link rel="manifest" href="manifest.json">
+<title>Jogo da Velha</title>
+<style>
+    body{
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: black;
+    color: #fff;
+}
+.container {
+    text-align: center;
+    margin-top: 50px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+  }
+  
+  .board {
+    display: grid;
+    grid-template-columns: repeat(3, auto);
+    grid-gap: 2px;
+    margin-bottom: 20px;
+    background-color: #444;
+  }
+  
+  .cell {
+    width: 100px;
+    height: 100px;
+    background-color: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2em;
+    font-weight: bolder;
+  }
+  
+  
+  
+  .restart-button {
+    font-size: 1em;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .restart-button:hover {
+    background-color: #0056b3;
+  }
+  
+</style>
+
+</head>
+<body>
+<div class="container">
+  <h1>Jogo da Velha</h1>
+  <div id="board" class="board">
+    <div class="cell" data-cell></div>
+    <div class="cell" data-cell></div>
+    <div class="cell" data-cell></div>
+    <div class="cell" data-cell></div>
+    <div class="cell" data-cell></div>
+    <div class="cell" data-cell></div>
+    <div class="cell" data-cell></div>
+    <div class="cell" data-cell></div>
+    <div class="cell" data-cell></div>
+  </div>
+  <button id="restartButton" class="restart-button">Reiniciar</button>
+  <p id="message"></p>
+</div>
+
+<script>
+    const cells = document.querySelectorAll('[data-cell]');
+const message = document.getElementById('message');
+const restartButton = document.getElementById('restartButton');
+
+let currentPlayer = 'X';
+let gameActive = true;
+
+const winningCombination = [
+  [0, 1, 2],
+  [3, 4, 5],
+  [6, 7, 8],
+  [0, 3, 6],
+  [1, 4, 7],
+  [2, 5, 8],
+  [0, 4, 8],
+  [2, 4, 6]
+];
+
+const startGame = () => {
+  cells.forEach(cell => {
+    cell.innerText = '';
+    cell.addEventListener('click', handleCellClick, { once: true });
+  });
+  message.innerText = 'Vez do jogador '+currentPlayer;
+};
+
+const handleCellClick = (event) => {
+  const cell = event.target;
+  const index = Array.from(cells).indexOf(cell);
+  placeMark(cell, index);
+  if (checkWin(currentPlayer)) {
+    endGame(false);
+  } else if (isDraw()) {
+    endGame(true);
+  } else {
+    swapPlayer();
+  }
+};
+
+const placeMark = (cell, index) => {
+  cell.innerText = currentPlayer;
+};
+
+const swapPlayer = () => {
+  currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+  message.innerText = 'Vez do jogador '+currentPlayer;
+};
+
+const checkWin = (currentPlayer) => {
+  return winningCombination.some(combination => {
+    return combination.every(index => {
+      return cells[index].innerText === currentPlayer;
+    });
+  });
+};
+
+const isDraw = () => {
+  return [...cells].every(cell => {
+    return cell.innerText !== '';
+  });
+};
+
+const endGame = (draw) => {
+  if (draw) {
+    message.innerText = 'Empate!';
+  } else {
+    message.innerText = `🏆 Jogador ${currentPlayer} venceu!`;
+  }
+  gameActive = false;
+};
+
+restartButton.addEventListener('click', () => {
+  currentPlayer = 'X';
+  gameActive = true;
+  startGame();
+});
+
+startGame();
+
+</script>
+
+</body>
+</html>

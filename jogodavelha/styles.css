@@ -1,0 +1,48 @@
+body{
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: black;
+    color: #fff;
+}
+.container {
+    text-align: center;
+    margin-top: 50px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+  }
+  
+  .board {
+    display: grid;
+    grid-template-columns: repeat(3, auto);
+    grid-gap: 2px;
+    margin-bottom: 20px;
+    background-color: #444;
+  }
+  
+  .cell {
+    width: 100px;
+    height: 100px;
+    background-color: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2em;
+    font-weight: bolder;
+  }
+  
+  
+  
+  .restart-button {
+    font-size: 1em;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .restart-button:hover {
+    background-color: #0056b3;
+  }
+  
